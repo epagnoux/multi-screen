@@ -1,8 +1,8 @@
 import { Component, Injector } from '@angular/core';
 
+import { nanoid } from 'nanoid';
 import { CommunicationChannel } from 'src/app/core/UiEnumerations';
 import { CommunicationMessage } from 'src/app/models/communication-message.model';
-import { CommunicationService } from 'src/app/services/communication.service';
 import { WidgetBase } from '../base/widget-base.component';
 
 export enum WidgetSocialMediaCommand {
@@ -15,24 +15,30 @@ export enum WidgetSocialMediaCommand {
 })
 export class WidgetSocialMediaComponent extends WidgetBase {
   item = 0;
+  id = nanoid();
 
-  constructor(private communicationService: CommunicationService, injector: Injector) {
+  constructor(injector: Injector) {
     super(injector);
   }
 
-  protected override onInit(): void {
-    this.subscribe(
-      this.communicationService.message$.subscribe((message: CommunicationMessage | undefined) => {
-        switch (message?.channel) {
-          case CommunicationChannel.SocialMedia:
-            switch (message.command as WidgetSocialMediaCommand) {
-              case WidgetSocialMediaCommand.UpdateDetails:
-                this.item = message.param;
-                break;
-            }
+  protected override onInit(): void {}
+
+  protected override setKey(): void {
+    this.key = CommunicationChannel.SocialMedia;
+  }
+
+  protected override receiveMessage(message: CommunicationMessage | undefined): void {
+    switch (message?.channel) {
+      case CommunicationChannel.SocialMedia:
+        switch (message.command as WidgetSocialMediaCommand) {
+          case WidgetSocialMediaCommand.UpdateDetails:
+            setTimeout(() => {
+              this.item = message.param;
+            }, 0);
+
             break;
         }
-      })
-    );
+        break;
+    }
   }
 }

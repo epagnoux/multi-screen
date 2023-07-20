@@ -1,5 +1,6 @@
 import { Injectable, Injector, OnDestroy, OnInit } from '@angular/core';
 
+import { CommunicationService } from 'src/app/services/communication.service';
 import { Subscription } from 'rxjs';
 import { UiEnumerations } from 'src/app/core/UiEnumerations';
 
@@ -11,17 +12,23 @@ export enum WidgetDirection {
 @Injectable()
 export abstract class BaseComponent extends UiEnumerations implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
+  public static communicationService: CommunicationService | undefined = undefined;
 
   constructor(injector: Injector) {
     super(injector);
+    if (!BaseComponent.communicationService) {
+      BaseComponent.communicationService = injector.get(CommunicationService);
+    }
   }
 
   ngOnInit(): void {
     this.onInit();
   }
 
-  subscribe(sub: Subscription): void {
-    this.subscriptions.push(sub);
+  subscribe(sub: Subscription | undefined): void {
+    if (sub) {
+      this.subscriptions.push(sub);
+    }
   }
 
   ngOnDestroy(): void {

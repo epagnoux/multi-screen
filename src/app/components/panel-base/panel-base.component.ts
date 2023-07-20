@@ -1,7 +1,7 @@
 import { Component, Injector, Input } from '@angular/core';
 
-import { nanoid } from 'nanoid';
 import { PanelOptionsModel } from 'src/app/models/panel-options.model';
+import { CommunicationService } from 'src/app/services/communication.service';
 import { PanelManagerService } from 'src/app/services/panel-manager.service';
 import { BaseComponent } from '../base/base.component';
 
@@ -20,16 +20,27 @@ export class PanelBaseComponent extends BaseComponent {
   @Input() options: PanelOptionsModel | undefined;
   @Input() placement = PanelPlacement.Popup;
 
-  key = nanoid();
+  key = 'panelBase';
   isVisible = false;
 
   readonly panelPlacement = PanelPlacement;
 
-  constructor(private panelManagerService: PanelManagerService, injector: Injector) {
+  constructor(
+    private communicationService: CommunicationService,
+    private panelManagerService: PanelManagerService,
+    injector: Injector
+  ) {
     super(injector);
   }
 
   protected override onInit(): void {
+    const broadcastChannel = this.communicationService.getBroadcastChannel(this.key);
+    if (broadcastChannel) {
+      broadcastChannel.onmessage = (message) => {
+        console.log('Received message', message);
+      };
+    }
+
     this.subscribe(
       this.panelManagerService.optionsUpdated$.subscribe((item) => {
         if (item) {

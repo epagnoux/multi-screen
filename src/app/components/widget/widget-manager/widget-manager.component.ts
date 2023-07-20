@@ -1,5 +1,7 @@
 import { Component, Injector } from '@angular/core';
 
+import { CommunicationChannel } from 'src/app/core/UiEnumerations';
+import { CommunicationMessage } from 'src/app/models/communication-message.model';
 import { WidgetBase } from '../base/widget-base.component';
 
 @Component({
@@ -13,4 +15,9 @@ export class WidgetManagerComponent extends WidgetBase {
   }
 
   protected override onInit(): void {}
+
+  override setKey(): void {
+    this.key = CommunicationChannel.WidgetManager;
+  }
+  protected override receiveMessage(message: CommunicationMessage | undefined): void {}
 }
