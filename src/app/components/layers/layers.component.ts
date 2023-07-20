@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { CommunicationChannel } from 'src/app/core/UiEnumerations';
 import { CommunicationMessage } from 'src/app/models/communication-message.model';
 import { CommunicationService } from 'src/app/services/communication.service';
-import { WidgetBase } from '../widget/base/widget-base.component';
+import { BaseComponent } from '../base/base.component';
 import { WidgetCiviliansCommand } from '../widget/widget-civilians/widget-civilians.component';
 import { WidgetSocialMediaCommand } from '../widget/widget-social-media/widget-social-media.component';
 
@@ -11,7 +11,7 @@ import { WidgetSocialMediaCommand } from '../widget/widget-social-media/widget-s
   templateUrl: './layers.component.html',
   styleUrls: ['./layers.component.less']
 })
-export class LayersComponent extends WidgetBase {
+export class LayersComponent extends BaseComponent {
   countCivilians = 0;
   countSocialMedia = 0;
 

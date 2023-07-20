@@ -16,8 +16,7 @@ export enum PanelManagerDisplayMode {
 })
 export class PanelManagerService {
   items: PanelOptionsModel[] = [];
-  // public message: CommunicationMessage | undefined;
-  // public message$ = new BehaviorSubject<CommunicationMessage>(undefined);
+
   public optionsUpdated: PanelOptionsModel | undefined;
   public optionsUpdated$ = new BehaviorSubject<PanelOptionsModel | undefined>(undefined);
 

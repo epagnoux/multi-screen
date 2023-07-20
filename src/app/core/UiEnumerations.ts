@@ -2,8 +2,9 @@ import { Injector } from '@angular/core';
 
 export enum CommunicationChannel {
   Application = 'application',
-  SocialMedia = 'SocialMedia',
-  Civilians = 'civilians'
+  SocialMedia = 'socialMedia',
+  Civilians = 'civilians',
+  WidgetManager = 'widgetManager'
 }
 
 export enum RoutingPaths {
