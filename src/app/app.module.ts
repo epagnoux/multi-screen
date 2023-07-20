@@ -9,6 +9,7 @@ import { WidgetCiviliansComponent } from './components/widget/widget-civilians/w
 import { WidgetItemComponent } from './components/widget/widget-item/widget-item.component';
 import { WidgetManagerComponent } from './components/widget/widget-manager/widget-manager.component';
 import { WidgetSocialMediaComponent } from './components/widget/widget-social-media/widget-social-media.component';
+import { LayersComponent } from './components/layers/layers.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { WidgetSocialMediaComponent } from './components/widget/widget-social-me
     WidgetManagerComponent,
     WidgetItemComponent,
     WidgetSocialMediaComponent,
-    WidgetCiviliansComponent
+    WidgetCiviliansComponent,
+    LayersComponent
   ],
   imports: [
     BrowserModule,

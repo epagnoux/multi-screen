@@ -1,6 +1,7 @@
 import { Injectable, Injector, OnDestroy, OnInit } from '@angular/core';
 
 import { Subscription } from 'rxjs';
+import { UiEnumerations } from 'src/app/core/UiEnumerations';
 
 export enum WidgetDirection {
   Horizontal = 'horizontal',
@@ -8,10 +9,12 @@ export enum WidgetDirection {
 }
 
 @Injectable()
-export abstract class BaseComponent implements OnInit, OnDestroy {
+export abstract class BaseComponent extends UiEnumerations implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
-  constructor(protected injector: Injector) {}
+  constructor(injector: Injector) {
+    super(injector);
+  }
 
   ngOnInit(): void {
     this.onInit();
