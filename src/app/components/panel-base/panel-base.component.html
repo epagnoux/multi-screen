@@ -1,17 +1,24 @@
 <div class="wrapper">
-  <div class="header">
-    <div class="start">
-      <div class="title" *ngIf="title">{{ title }}</div>
-    </div>
-    <div class="end">
-      <div class="actions">
-        <div class="action">
-          <button>Extract</button>
+  <ng-container *ngIf="isVisible">
+    <div class="header">
+      <div class="start">
+        <div class="title" *ngIf="title">{{ title }}</div>
+      </div>
+      <div class="end">
+        <div class="actions">
+          <div class="action" *ngIf="placement !== panelPlacement.Window">
+            <button (click)="onUpdatePlacement(panelPlacement.Window)">Window</button>
+          </div>
+          <div class="action" *ngIf="placement !== panelPlacement.Popup">
+            <button (click)="onUpdatePlacement(panelPlacement.Popup)">Popup</button>
+          </div>
+          <div class="action" *ngIf="placement !== panelPlacement.Embeded">
+            <button (click)="onUpdatePlacement(panelPlacement.Embeded)">Embeded</button>
+          </div>
         </div>
-        <div class="action"><button>Restore</button></div>
       </div>
     </div>
-  </div>
-  {{ options?.key }} - {{ placement }}
-  <div class="content"><ng-content></ng-content></div>
+    {{ options?.key }} - {{ options?.placement }}
+    <div class="content"><ng-content></ng-content></div>
+  </ng-container>
 </div>

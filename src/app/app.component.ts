@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { PanelManagerService } from './services/panel-manager.service';
+import { PanelOptionsModel } from './models/panel-options.model';
 import { PanelPlacement } from './components/panel-base/panel-base.component';
 import { WidgetDirection } from './components/widget/base/widget-base.component';
 
@@ -12,9 +14,11 @@ export class AppComponent {
 
   readonly widgetDirection = WidgetDirection;
   readonly panelPlacement = PanelPlacement;
-  
-  constructor(){
-    console.log('aaa');
-    
+  options: PanelOptionsModel;
+  key = 'PanelWidget';
+
+  constructor(private panelManagerService: PanelManagerService) {
+    this.options = new PanelOptionsModel(this.key, PanelPlacement.Popup);
+    panelManagerService.setOptions(this.options);
   }
 }
