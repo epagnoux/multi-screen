@@ -1,0 +1,34 @@
+<div class="wrapper">
+  <div class="panels">
+    <div class="panel">
+      <app-panel-base [title]="'Panel Widgets'" *ngIf="options" [options]="options" [placement]="panelPlacement.Popup">
+        <app-widget-manager>
+          <app-widget-item [title]="'Social Media'">
+            <app-widget-social-media></app-widget-social-media>
+          </app-widget-item>
+          <app-widget-item [title]="'Civilians'">
+            <app-widget-civilians></app-widget-civilians>
+          </app-widget-item>
+        </app-widget-manager>
+      </app-panel-base>
+    </div>
+    <div class="panel"></div>
+    <div class="panel">
+      <app-widget-item [title]="'layers'">
+        <app-layers></app-layers>
+      </app-widget-item>
+    </div>
+  </div>
+  <div class="panels embeded">
+    <app-panel-base [title]="'Panel Widgets'" *ngIf="options" [options]="options" [placement]="panelPlacement.Embeded">
+      <app-widget-manager>
+        <app-widget-item [title]="'Social Media'">
+          <app-widget-social-media></app-widget-social-media>
+        </app-widget-item>
+        <app-widget-item [title]="'Civilians'">
+          <app-widget-civilians></app-widget-civilians>
+        </app-widget-item>
+      </app-widget-manager>
+    </app-panel-base>
+  </div>
+</div>

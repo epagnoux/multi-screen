@@ -6,6 +6,10 @@ export enum CommunicationChannel {
   Civilians = 'civilians'
 }
 
+export enum RoutingPaths {
+  WindowPanel = 'windowPanel'
+}
+
 export class UiEnumerations {
   constructor(protected injector: Injector) {}
 

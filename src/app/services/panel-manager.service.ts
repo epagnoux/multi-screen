@@ -1,6 +1,9 @@
 import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { PanelOptionsModel } from '../models/panel-options.model';
+import { PanelPlacement } from '../components/panel-base/panel-base.component';
+import { Router } from '@angular/router';
+import { RoutingPaths } from '../core/UiEnumerations';
 
 export enum PanelManagerDisplayMode {
   Popup,
@@ -18,10 +21,11 @@ export class PanelManagerService {
   public optionsUpdated: PanelOptionsModel | undefined;
   public optionsUpdated$ = new BehaviorSubject<PanelOptionsModel | undefined>(undefined);
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   register(options: PanelOptionsModel) {
-    this.items.push(options);
+    // Clone options
+    this.items.push({ ...options });
     console.log('PanelManager Items Length: ', this.items.length);
   }
   unregister(options: PanelOptionsModel) {
@@ -29,12 +33,22 @@ export class PanelManagerService {
     console.log('PanelManager Items Length: ', this.items.length);
   }
 
-  setOptions(options: PanelOptionsModel) {
-    const item = this.items.find((p) => p.key === options.key);
+  setOptions(windoOptions: PanelOptionsModel) {
+    const item = this.items.find((p) => p.key === windoOptions.key);
     if (item) {
-      item.placement = options.placement;
+      const isFirstOpeneingWindow = windoOptions.placement === PanelPlacement.Window && item.placement !== windoOptions.placement;
+
+      item.placement = windoOptions.placement;
       this.optionsUpdated = item;
       this.optionsUpdated$.next(this.optionsUpdated);
+
+      if (isFirstOpeneingWindow) {
+        const routePath = this.router.createUrlTree([`${RoutingPaths.WindowPanel}`]).toString();
+        //const routePath = 'http://cnn.com';
+
+        const windowOptions = 'toolbar=0,scrollbars=0,resizable=0,menubar=0,status=0,titlebar=0,width=400,height=400';
+        window.open(routePath, '_blank', windowOptions);
+      }
     }
   }
 
