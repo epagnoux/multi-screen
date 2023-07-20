@@ -16,17 +16,36 @@ export enum PanelPlacement {
 })
 export class PanelBaseComponent implements OnInit {
   @Input() title?: string;
+  @Input() options: PanelOptionsModel | undefined;
   @Input() placement = PanelPlacement.Popup;
-  @Input() key = nanoid();
 
-  options: PanelOptionsModel | undefined;
+  key = nanoid();
+  isVisible = false;
 
   readonly panelPlacement = PanelPlacement;
 
   constructor(private panelManagerService: PanelManagerService) {}
 
   ngOnInit(): void {
-    this.options = new PanelOptionsModel(this.key, this.placement);
+    this.panelManagerService.optionsUpdated$.subscribe((item) => {
+      if (item) {
+        this.updateVisibility(item);
+      }
+    });
+    if (!this.options) {
+      this.options = new PanelOptionsModel(this.key, this.placement);
+    }
+
     this.panelManagerService.register(this.options);
+    this.updateVisibility(this.panelManagerService.getOptions(this.options));
+  }
+  updateVisibility(item: PanelOptionsModel) {
+    this.isVisible = item.placement === this.placement;
+  }
+  onUpdatePlacement(placement: PanelPlacement) {
+    if (this.options) {
+      this.options.placement = placement;
+      this.panelManagerService.setOptions(this.options);
+    }
   }
 }
