@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Injector, Input } from '@angular/core';
 
-import { PanelManagerService } from 'src/app/services/panel-manager.service';
-import { PanelOptionsModel } from 'src/app/models/panel-options.model';
 import { nanoid } from 'nanoid';
+import { PanelOptionsModel } from 'src/app/models/panel-options.model';
+import { PanelManagerService } from 'src/app/services/panel-manager.service';
+import { BaseComponent } from '../base/base.component';
 
 export enum PanelPlacement {
   Popup = 'popup',
@@ -14,7 +15,7 @@ export enum PanelPlacement {
   templateUrl: './panel-base.component.html',
   styleUrls: ['./panel-base.component.less']
 })
-export class PanelBaseComponent implements OnInit {
+export class PanelBaseComponent extends BaseComponent {
   @Input() title?: string;
   @Input() options: PanelOptionsModel | undefined;
   @Input() placement = PanelPlacement.Popup;
@@ -24,14 +25,19 @@ export class PanelBaseComponent implements OnInit {
 
   readonly panelPlacement = PanelPlacement;
 
-  constructor(private panelManagerService: PanelManagerService) {}
+  constructor(private panelManagerService: PanelManagerService, injector: Injector) {
+    super(injector);
+  }
 
-  ngOnInit(): void {
-    this.panelManagerService.optionsUpdated$.subscribe((item) => {
-      if (item) {
-        this.updateVisibility(item);
-      }
-    });
+  protected override onInit(): void {
+    this.subscribe(
+      this.panelManagerService.optionsUpdated$.subscribe((item) => {
+        if (item) {
+          this.updateVisibility(item);
+        }
+      })
+    );
+
     if (!this.options) {
       this.options = new PanelOptionsModel(this.key, this.placement);
     }
@@ -39,9 +45,11 @@ export class PanelBaseComponent implements OnInit {
     this.panelManagerService.register(this.options);
     this.updateVisibility(this.panelManagerService.getOptions(this.options));
   }
+
   updateVisibility(item: PanelOptionsModel) {
     this.isVisible = item.placement === this.placement;
   }
+
   onUpdatePlacement(placement: PanelPlacement) {
     if (this.options) {
       this.options.placement = placement;

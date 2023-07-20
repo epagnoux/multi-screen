@@ -13,7 +13,9 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
   constructor(protected injector: Injector) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.onInit();
+  }
 
   subscribe(sub: Subscription): void {
     this.subscriptions.push(sub);
@@ -27,6 +29,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     this.onDestroy();
   }
 
+  protected abstract onInit(): void;
   protected onDestroy(): void {
     // Intentional
   }

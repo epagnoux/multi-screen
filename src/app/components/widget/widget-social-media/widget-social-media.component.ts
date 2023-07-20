@@ -11,4 +11,6 @@ export class WidgetSocialMediaComponent extends WidgetBase {
   constructor(injector: Injector) {
     super(injector);
   }
+
+  protected override onInit(): void {}
 }

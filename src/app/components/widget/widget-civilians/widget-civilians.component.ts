@@ -11,4 +11,6 @@ export class WidgetCiviliansComponent extends WidgetBase {
   constructor(injector: Injector) {
     super(injector);
   }
+
+  protected override onInit(): void {}
 }
