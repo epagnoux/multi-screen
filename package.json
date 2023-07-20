@@ -1,0 +1,51 @@
+{
+  "name": "multi-screen",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "openapi": "pwsh -NoProfile -ExecutionPolicy Unrestricted -Command ./tools/code-generator/generate-openapi.ps1  ./src/app/services/webapi  ../EchoWebApi/AzureInfra/nestedtemplates/apis/openapis/echodtwebapi-v2.yaml",
+    "openapi-sse": "pwsh -NoProfile -ExecutionPolicy Unrestricted -Command ./tools/code-generator/generate-link-sse-openapi.ps1",
+    "local": "node ./AzureInfra/replace-tokens.js --source=AzureInfra/configs/appSettings-template.json --environment=local --target=./src/assets/configs/appSettings.json && ng serve",
+    "proxy": "ng serve --host 127.0.0.1 --port 4200",
+    "onetrust": "node ./AzureInfra/replace-tokens.js --source=AzureInfra/configs/appSettings-template.json --environment=onetrust --target=./src/assets/configs/appSettings.json && ng serve --port 4200 --host 0.0.0.0 --ssl --disable-host-check",
+    "build": "node ./AzureInfra/replace-tokens.js --source=AzureInfra/configs/appSettings-template.json --environment=prd --target=./src/assets/configs/appSettings.json && ng build --configuration production",
+    "test": "node ./AzureInfra/replace-tokens.js --source=AzureInfra/configs/appSettings-template.json --environment=mock --target=./src/assets/configs/appSettings.json && ng test --watch true --code-coverage",
+    "test-pipeline": "node ./AzureInfra/replace-tokens.js --source=AzureInfra/configs/appSettings-template.json --environment=mock --target=./src/assets/configs/appSettings.json && ng test --watch false --code-coverage --browsers=ChromeHeadless",
+    "coverage": "node ./AzureInfra/replace-tokens.js --source=AzureInfra/configs/appSettings-template.json --environment=mock --target=./src/assets/configs/appSettings.json && ng test --code-coverage --watch=false --reporters=coverage",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "ios": "node ./AzureInfra/replace-tokens.js --source=AzureInfra/configs/appSettings-template.json --environment=proxy --target=./src/assets/configs/appSettings.json && ng serve --port 4200 --host  0.0.0.0 --ssl --disable-host-check"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^14.1.0",
+    "@angular/common": "^14.1.0",
+    "@angular/compiler": "^14.1.0",
+    "@angular/core": "^14.1.0",
+    "@angular/forms": "^14.1.0",
+    "@angular/platform-browser": "^14.1.0",
+    "@angular/platform-browser-dynamic": "^14.1.0",
+    "@angular/router": "^14.1.0",
+    "nanoid": "^4.0.2",
+    "rxjs": "~7.5.0",
+    "stylelint": "^15.10.2",
+    "stylelint-config-recommended-less": "^1.0.4",
+    "stylelint-less": "^1.0.8",
+    "stylelint-order": "^6.0.3",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.11.4"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^14.1.1",
+    "@angular/cli": "~14.1.1",
+    "@angular/compiler-cli": "^14.1.0",
+    "@types/jasmine": "~4.0.0",
+    "jasmine-core": "~4.2.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.0.0",
+    "typescript": "~4.7.2"
+  }
+}

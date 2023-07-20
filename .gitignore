@@ -1,0 +1,12 @@
+.angular
+.history
+node_modules
+typings
+dist
+coverage
+.npmrc
+*.bak
+.vscode/bookmarks.json
+.vscode/diff
+/__azurite_*.json
+/__blobstorage__/

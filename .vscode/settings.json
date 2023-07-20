@@ -1,0 +1,24 @@
+{
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true,
+  "editor.linkedEditing": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  },
+  "[less]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "debug.saveBeforeStart": "allEditorsInActiveGroup",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "sonarlint.connectedMode.project": {
+    "projectKey": "caeglobal_EchoWebApp"
+  },
+
+  "terminal.integrated.enablePersistentSessions": false,
+  "WhiteSource Advise.Diff.BaseBranch": "main",
+  "search.followSymlinks": false,
+  "cSpell.words": ["gsap", "launchdarkly", "msal"],
+}
