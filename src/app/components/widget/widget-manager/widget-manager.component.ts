@@ -1,6 +1,6 @@
-import { WidgetBase } from '../base/widget-base.component';
+import { Component, Injector } from '@angular/core';
 
-import { Component } from '@angular/core';
+import { WidgetBase } from '../base/widget-base.component';
 
 @Component({
   selector: 'app-widget-manager',
@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./widget-manager.component.less']
 })
 export class WidgetManagerComponent extends WidgetBase {
-  constructor() {
-    super();
+  constructor(injector: Injector) {
+    super(injector);
   }
 }

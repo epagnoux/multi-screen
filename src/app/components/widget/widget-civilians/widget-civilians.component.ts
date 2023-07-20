@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 
 import { WidgetBase } from '../base/widget-base.component';
 
@@ -8,7 +8,7 @@ import { WidgetBase } from '../base/widget-base.component';
   styleUrls: ['./widget-civilians.component.less']
 })
 export class WidgetCiviliansComponent extends WidgetBase {
-  constructor() {
-    super();
+  constructor(injector: Injector) {
+    super(injector);
   }
 }

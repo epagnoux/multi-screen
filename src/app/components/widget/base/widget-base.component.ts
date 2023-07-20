@@ -1,5 +1,6 @@
-import { Injectable, Input, OnDestroy, OnInit } from '@angular/core';
+import { Injectable, Injector, Input } from '@angular/core';
 
+import { BaseComponent } from '../../base/base.component';
 import { nanoid } from 'nanoid';
 
 export enum WidgetDirection {
@@ -8,15 +9,13 @@ export enum WidgetDirection {
 }
 
 @Injectable()
-export abstract class WidgetBase implements OnInit, OnDestroy {
+export abstract class WidgetBase extends BaseComponent {
   @Input() direction = WidgetDirection.Vertical;
   @Input() id = nanoid();
 
   readonly widgetDirection = WidgetDirection;
 
-  constructor() {}
-
-  ngOnInit(): void {}
-
-  ngOnDestroy(): void {}
+  constructor(injector: Injector) {
+    super(injector);
+  }
 }
