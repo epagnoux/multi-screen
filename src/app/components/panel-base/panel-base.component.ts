@@ -47,6 +47,15 @@ export class PanelBaseComponent extends BaseComponent {
   }
 
   updateVisibility(item: PanelOptionsModel) {
+    if (this.placement === PanelPlacement.Window) {
+      console.log('window');
+    }
+
+    if (item.placement === PanelPlacement.Window && item.placement === this.placement) {
+      this.isVisible = true;
+      return;
+    }
+
     this.isVisible = item.placement === this.placement;
   }
 
