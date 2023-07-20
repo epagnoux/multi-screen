@@ -10,8 +10,8 @@ export class CommunicationService {
   public message$ = new BehaviorSubject<CommunicationMessage | undefined>(undefined);
   constructor() {}
 
-  postMessage(infos: CommunicationMessage) {
-    this.message = infos;
+  postMessage(message: CommunicationMessage) {
+    this.message = message;
     this.message$.next(this.message);
   }
 
