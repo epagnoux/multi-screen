@@ -3,7 +3,6 @@ import { CommunicationChannel } from 'src/app/core/UiEnumerations';
 import { CommunicationMessage } from 'src/app/models/communication-message.model';
 import { CommunicationService } from 'src/app/services/communication.service';
 import { BaseComponent } from '../base/base.component';
-import { WidgetCiviliansCommand } from '../widget/widget-civilians/widget-civilians.component';
 import { WidgetSocialMediaCommand } from '../widget/widget-social-media/widget-social-media.component';
 
 @Component({
@@ -21,7 +20,7 @@ export class LayersComponent extends BaseComponent {
   }
 
   protected override onInit(): void {
-    this.broadcastChannel = new BroadcastChannel('toto');
+    this.broadcastChannel = new BroadcastChannel(CommunicationChannel.Widget);
 
     this.broadcastChannel.onmessage = (message) => {
       console.log(message);
@@ -42,8 +41,11 @@ export class LayersComponent extends BaseComponent {
 
   onClickCivilians() {
     this.countCivilians++;
-    this.communicationService.postMessage(
-      new CommunicationMessage(CommunicationChannel.Civilians, WidgetCiviliansCommand.UpdateDetails, this.countCivilians)
+    // this.communicationService.postMessage(
+    //   new CommunicationMessage(CommunicationChannel.Civilians, WidgetCiviliansCommand.UpdateDetails, this.countCivilians)
+    // );
+    this.broadcastChannel?.postMessage(
+      new CommunicationMessage(CommunicationChannel.Civilians, WidgetSocialMediaCommand.UpdateDetails, this.countCivilians)
     );
   }
 }

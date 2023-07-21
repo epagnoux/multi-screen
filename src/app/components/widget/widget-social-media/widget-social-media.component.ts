@@ -19,12 +19,6 @@ export class WidgetSocialMediaComponent extends WidgetBase {
 
   constructor(private cdRef: ChangeDetectorRef, injector: Injector) {
     super(injector);
-    const broadcastChannel = new BroadcastChannel('toto');
-
-    broadcastChannel.onmessage = (message) => {
-      console.log(message);
-      this.receiveMessage(message.data as any);
-    };
   }
 
   protected override onInit(): void {}

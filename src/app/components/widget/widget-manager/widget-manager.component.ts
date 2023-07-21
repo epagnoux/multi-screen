@@ -17,7 +17,7 @@ export class WidgetManagerComponent extends WidgetBase {
   protected override onInit(): void {}
 
   override setKey(): void {
-    this.key = CommunicationChannel.WidgetManager;
+    this.key = CommunicationChannel.Widget;
   }
   protected override receiveMessage(message: CommunicationMessage | undefined): void {}
 }

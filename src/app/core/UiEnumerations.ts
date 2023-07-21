@@ -4,7 +4,7 @@ export enum CommunicationChannel {
   Application = 'application',
   SocialMedia = 'socialMedia',
   Civilians = 'civilians',
-  WidgetManager = 'widgetManager'
+  Widget = 'Widget'
 }
 
 export enum RoutingPaths {

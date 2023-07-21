@@ -1,6 +1,7 @@
 import { Injectable, Injector, Input } from '@angular/core';
 
 import { BaseComponent } from '../../base/base.component';
+import { CommunicationChannel } from 'src/app/core/UiEnumerations';
 import { CommunicationMessage } from 'src/app/models/communication-message.model';
 import { nanoid } from 'nanoid';
 
@@ -21,22 +22,13 @@ export abstract class WidgetBase extends BaseComponent {
 
     this.setKey();
 
-    this.subscribe(
-      BaseComponent.communicationService?.message$.subscribe((message: CommunicationMessage | undefined) => {
-        this.receiveMessage(message);
-      })
-    );
+    const broadcastChannel = new BroadcastChannel(CommunicationChannel.Widget);
 
-    const broadcastChannel = BaseComponent.communicationService?.getBroadcastChannel(this.key);
-
-    if (broadcastChannel) {
-      broadcastChannel.onmessage = (message) => {
-        console.log('Received message', message);
-        if (message) {
-          this.receiveMessage(message.currentTarget as any);
-        }
-      };
-    }
+    broadcastChannel.onmessage = (message) => {
+      console.log(message);
+      this.receiveMessage(message.data as any);
+      BaseComponent.changeDetectorRef?.detectChanges();
+    };
   }
 
   protected abstract setKey(): void;
