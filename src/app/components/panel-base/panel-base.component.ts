@@ -1,7 +1,8 @@
 import { Component, Injector, Input } from '@angular/core';
 
+import { CommunicationChannel, WidgetCommand } from 'src/app/core/UiEnumerations';
+import { CommunicationMessage } from 'src/app/models/communication-message.model';
 import { PanelOptionsModel } from 'src/app/models/panel-options.model';
-import { CommunicationService } from 'src/app/services/communication.service';
 import { PanelManagerService } from 'src/app/services/panel-manager.service';
 import { BaseComponent } from '../base/base.component';
 
@@ -18,39 +19,42 @@ export enum PanelPlacement {
 export class PanelBaseComponent extends BaseComponent {
   @Input() title?: string;
   @Input() options: PanelOptionsModel | undefined;
-  @Input() placement = PanelPlacement.Popup;
+  @Input() placement = PanelPlacement.Embeded;
 
-  key = 'panelBase';
+  broadcastChannel: BroadcastChannel | undefined;
+
   isVisible = false;
 
   readonly panelPlacement = PanelPlacement;
+  currentWindow: any;
+  item: any;
 
-  constructor(
-    private communicationService: CommunicationService,
-    private panelManagerService: PanelManagerService,
-    injector: Injector
-  ) {
+  constructor(private panelManagerService: PanelManagerService, injector: Injector) {
     super(injector);
   }
 
   protected override onInit(): void {
-    const broadcastChannel = this.communicationService.getBroadcastChannel(this.key);
-    if (broadcastChannel) {
-      broadcastChannel.onmessage = (message) => {
-        console.log('Received message', message);
-      };
-    }
+    this.broadcastChannel = new BroadcastChannel(CommunicationChannel.Widget);
+
+    this.broadcastChannel.onmessage = (message) => {
+      console.log(message);
+      this.receiveMessage(message.data as any);
+      BaseComponent.changeDetectorRef?.detectChanges();
+    };
 
     this.subscribe(
       this.panelManagerService.optionsUpdated$.subscribe((item) => {
-        if (item) {
-          this.updateVisibility(item);
+        console.log(this.placement);
+
+        this.item = item;
+        if (this.item) {
+          this.updateVisibility(this.item);
         }
       })
     );
 
     if (!this.options) {
-      this.options = new PanelOptionsModel(this.key, this.placement);
+      this.options = new PanelOptionsModel(CommunicationChannel.PanelManager, this.placement);
     }
 
     this.panelManagerService.register(this.options);
@@ -68,12 +72,46 @@ export class PanelBaseComponent extends BaseComponent {
     }
 
     this.isVisible = item.placement === this.placement;
+    BaseComponent.changeDetectorRef?.detectChanges();
+    console.log(this.placement + ' / ' + this.isVisible);
+    console.log('aaa');
   }
 
   onUpdatePlacement(placement: PanelPlacement) {
+    if (this.options?.placement === PanelPlacement.Window && placement !== PanelPlacement.Window) {
+      // Closing Panel window
+      this.broadcastChannel?.postMessage(
+        new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClosing, placement)
+      );
+    }
+
     if (this.options) {
       this.options.placement = placement;
       this.panelManagerService.setOptions(this.options);
     }
+  }
+
+  protected receiveMessage(message: CommunicationMessage | undefined): void {
+    switch (message?.channel) {
+      case CommunicationChannel.Widget:
+        switch (message.command as WidgetCommand) {
+          case WidgetCommand.PanelWindowClosing:
+            this.item.placement = message.param;
+            this.updateVisibility(this.item);
+
+            this.broadcastChannel?.postMessage(
+              new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClose)
+            );
+            break;
+
+          case WidgetCommand.PanelWindowClose:
+            if (this.placement === PanelPlacement.Window) {
+              window.close();
+            }
+            break;
+        }
+        break;
+    }
+    BaseComponent.changeDetectorRef?.detectChanges();
   }
 }

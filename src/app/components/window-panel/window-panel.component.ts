@@ -1,19 +1,21 @@
 import { Component, Injector } from '@angular/core';
+import { CommunicationChannel, WidgetCommand } from 'src/app/core/UiEnumerations';
+import { CommunicationMessage } from 'src/app/models/communication-message.model';
 import { PanelOptionsModel } from 'src/app/models/panel-options.model';
 import { PanelManagerService } from 'src/app/services/panel-manager.service';
-import { BaseComponent, WidgetDirection } from '../base/base.component';
 import { PanelPlacement } from '../panel-base/panel-base.component';
+import { WidgetBase } from '../widget/base/widget-base.component';
 
 @Component({
   selector: 'app-window-panel',
   templateUrl: './window-panel.component.html',
   styleUrls: ['./window-panel.component.less']
 })
-export class WindowPanelComponent extends BaseComponent {
+export class WindowPanelComponent extends WidgetBase {
   options: PanelOptionsModel | undefined;
   key = 'PanelWidget';
 
-  readonly widgetDirection = WidgetDirection;
+  //readonly widgetDirection = WidgetDirection;
   readonly panelPlacement = PanelPlacement;
 
   constructor(private panelManagerService: PanelManagerService, injector: Injector) {
@@ -24,5 +26,7 @@ export class WindowPanelComponent extends BaseComponent {
     this.options = new PanelOptionsModel(this.key, PanelPlacement.Window);
     this.panelManagerService.register(this.options);
     this.panelManagerService.setOptions(this.options);
+    this.broadcastChannel?.postMessage(new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.GetDetails));
   }
+  protected override receiveMessage(message: CommunicationMessage | undefined): void {}
 }

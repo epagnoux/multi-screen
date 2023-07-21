@@ -1,9 +1,7 @@
 import { Component, Injector } from '@angular/core';
-import { CommunicationChannel } from 'src/app/core/UiEnumerations';
+import { CommunicationChannel, WidgetCommand } from 'src/app/core/UiEnumerations';
 import { CommunicationMessage } from 'src/app/models/communication-message.model';
-import { CommunicationService } from 'src/app/services/communication.service';
 import { BaseComponent } from '../base/base.component';
-import { WidgetSocialMediaCommand } from '../widget/widget-social-media/widget-social-media.component';
 
 @Component({
   selector: 'app-layers',
@@ -15,7 +13,7 @@ export class LayersComponent extends BaseComponent {
   countSocialMedia = 0;
   broadcastChannel: BroadcastChannel | undefined;
 
-  constructor(private communicationService: CommunicationService, injector: Injector) {
+  constructor(injector: Injector) {
     super(injector);
   }
 
@@ -29,23 +27,15 @@ export class LayersComponent extends BaseComponent {
 
   onClickSocialMedia() {
     this.countSocialMedia++;
-    // this.communicationService.postMessage(
-    //   new CommunicationMessage(CommunicationChannel.SocialMedia, WidgetSocialMediaCommand.UpdateDetails, this.countSocialMedia)
-    // );
-
-    // this.broadcastChannel = new BroadcastChannel('toto');
     this.broadcastChannel?.postMessage(
-      new CommunicationMessage(CommunicationChannel.SocialMedia, WidgetSocialMediaCommand.UpdateDetails, this.countSocialMedia)
+      new CommunicationMessage(CommunicationChannel.SocialMedia, WidgetCommand.UpdateDetails, this.countSocialMedia)
     );
   }
 
   onClickCivilians() {
     this.countCivilians++;
-    // this.communicationService.postMessage(
-    //   new CommunicationMessage(CommunicationChannel.Civilians, WidgetCiviliansCommand.UpdateDetails, this.countCivilians)
-    // );
     this.broadcastChannel?.postMessage(
-      new CommunicationMessage(CommunicationChannel.Civilians, WidgetSocialMediaCommand.UpdateDetails, this.countCivilians)
+      new CommunicationMessage(CommunicationChannel.Civilians, WidgetCommand.UpdateDetails, this.countCivilians)
     );
   }
 }

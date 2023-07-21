@@ -1,9 +1,9 @@
-import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { PanelOptionsModel } from '../models/panel-options.model';
-import { PanelPlacement } from '../components/panel-base/panel-base.component';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { PanelPlacement } from '../components/panel-base/panel-base.component';
 import { RoutingPaths } from '../core/UiEnumerations';
+import { PanelOptionsModel } from '../models/panel-options.model';
 
 export enum PanelManagerDisplayMode {
   Popup,
@@ -43,9 +43,8 @@ export class PanelManagerService {
 
       if (isFirstOpeneingWindow) {
         const routePath = this.router.createUrlTree([`${RoutingPaths.WindowPanel}`]).toString();
-        //const routePath = 'http://cnn.com';
-
-        const windowOptions = 'toolbar=0,scrollbars=0,resizable=0,menubar=0,status=0,titlebar=0,width=400,height=400';
+        const windowOptions =
+          'toolbar=0,scrollbars=0,resizable=0,menubar=0,status=0,titlebar=0,left=500,top=500,width=400,height=700';
         window.open(routePath, '_blank', windowOptions);
       }
     }
