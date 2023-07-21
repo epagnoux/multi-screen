@@ -14,16 +14,28 @@ import { WidgetSocialMediaCommand } from '../widget/widget-social-media/widget-s
 export class LayersComponent extends BaseComponent {
   countCivilians = 0;
   countSocialMedia = 0;
+  broadcastChannel: BroadcastChannel | undefined;
 
   constructor(private communicationService: CommunicationService, injector: Injector) {
     super(injector);
   }
 
-  protected override onInit(): void {}
+  protected override onInit(): void {
+    this.broadcastChannel = new BroadcastChannel('toto');
+
+    this.broadcastChannel.onmessage = (message) => {
+      console.log(message);
+    };
+  }
 
   onClickSocialMedia() {
     this.countSocialMedia++;
-    this.communicationService.postMessage(
+    // this.communicationService.postMessage(
+    //   new CommunicationMessage(CommunicationChannel.SocialMedia, WidgetSocialMediaCommand.UpdateDetails, this.countSocialMedia)
+    // );
+
+    // this.broadcastChannel = new BroadcastChannel('toto');
+    this.broadcastChannel?.postMessage(
       new CommunicationMessage(CommunicationChannel.SocialMedia, WidgetSocialMediaCommand.UpdateDetails, this.countSocialMedia)
     );
   }

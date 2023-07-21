@@ -1,5 +1,6 @@
 <div class="wrapper">
   <ng-container *ngIf="isVisible">
+    <!-- <ng-container> -->
     <div class="header">
       <div class="start">
         <div class="title" *ngIf="title">{{ title }}</div>
@@ -18,7 +19,7 @@
         </div>
       </div>
     </div>
-    {{ options?.key }} - {{ options?.placement }}
+    {{ options?.key }} -- {{ options?.placement }}
     <div class="content"><ng-content></ng-content></div>
   </ng-container>
 </div>

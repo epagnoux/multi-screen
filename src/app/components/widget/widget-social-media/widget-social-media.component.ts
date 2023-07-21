@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { ChangeDetectorRef, Component, Injector } from '@angular/core';
 
 import { nanoid } from 'nanoid';
 import { CommunicationChannel } from 'src/app/core/UiEnumerations';
@@ -17,8 +17,14 @@ export class WidgetSocialMediaComponent extends WidgetBase {
   item = 0;
   id = nanoid();
 
-  constructor(injector: Injector) {
+  constructor(private cdRef: ChangeDetectorRef, injector: Injector) {
     super(injector);
+    const broadcastChannel = new BroadcastChannel('toto');
+
+    broadcastChannel.onmessage = (message) => {
+      console.log(message);
+      this.receiveMessage(message.data as any);
+    };
   }
 
   protected override onInit(): void {}
@@ -32,9 +38,8 @@ export class WidgetSocialMediaComponent extends WidgetBase {
       case CommunicationChannel.SocialMedia:
         switch (message.command as WidgetSocialMediaCommand) {
           case WidgetSocialMediaCommand.UpdateDetails:
-            setTimeout(() => {
-              this.item = message.param;
-            }, 0);
+            this.item = message.param;
+            this.cdRef.detectChanges();
 
             break;
         }
