@@ -1,7 +1,7 @@
 <div class="wrapper">
   <div class="panels">
     <div class="panel">
-      <app-panel-base [title]="'Panel Widgets'" *ngIf="options" [options]="options" [placement]="panelPlacement.Popup">
+      <app-panel-base [title]="'Panel Widgets'" *ngIf="optionsPopup" [options]="optionsPopup">
         <app-widget-manager>
           <app-widget-item [title]="'Social Media'">
             <app-widget-social-media></app-widget-social-media>
@@ -20,7 +20,7 @@
     </div>
   </div>
   <div class="panels embeded">
-    <app-panel-base [title]="'Panel Widgets'" *ngIf="options" [options]="options" [placement]="panelPlacement.Embeded">
+    <app-panel-base [title]="'Panel Widgets'" *ngIf="optionsEmbeded" [options]="optionsEmbeded">
       <app-widget-manager>
         <app-widget-item [title]="'Social Media'">
           <app-widget-social-media></app-widget-social-media>

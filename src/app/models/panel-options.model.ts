@@ -2,10 +2,12 @@ import { PanelPlacement } from '../components/panel-base/panel-base.component';
 
 export class PanelOptionsModel {
   key: string;
-  placement: PanelPlacement;
+  currentPlacement: PanelPlacement;
+  originalPlacement: PanelPlacement;
 
-  constructor(key: any, placement: PanelPlacement) {
+  constructor(key: string, currentPlacement: PanelPlacement, originalPlacement = currentPlacement) {
     this.key = key;
-    this.placement = placement;
+    this.currentPlacement = currentPlacement;
+    this.originalPlacement = originalPlacement;
   }
 }

@@ -5,6 +5,7 @@ export enum CommunicationChannel {
   SocialMedia = 'socialMedia',
   Civilians = 'civilians',
   PanelManager = 'panelManager',
+  WindowPanel = 'windowPanel',
   Widget = 'Widget'
 }
 

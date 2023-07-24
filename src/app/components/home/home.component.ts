@@ -12,7 +12,8 @@ import { PanelPlacement } from '../panel-base/panel-base.component';
 export class HomeComponent extends BaseComponent {
   readonly widgetDirection = WidgetDirection;
   readonly panelPlacement = PanelPlacement;
-  options: PanelOptionsModel | undefined;
+  optionsPopup: PanelOptionsModel | undefined;
+  optionsEmbeded: PanelOptionsModel | undefined;
   key = 'PanelWidget';
 
   constructor(private panelManagerService: PanelManagerService, injector: Injector) {
@@ -20,7 +21,8 @@ export class HomeComponent extends BaseComponent {
   }
 
   protected override onInit(): void {
-    this.options = new PanelOptionsModel(this.key, PanelPlacement.Popup);
-    this.panelManagerService.setOptions(this.options);
+    this.optionsPopup = new PanelOptionsModel(this.key, PanelPlacement.Popup);
+    this.optionsEmbeded = new PanelOptionsModel(this.key, PanelPlacement.Embeded);
+    this.panelManagerService.setOptions(this.optionsPopup);
   }
 }

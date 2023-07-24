@@ -13,7 +13,7 @@ import { WidgetBase } from '../widget/base/widget-base.component';
 })
 export class WindowPanelComponent extends WidgetBase {
   options: PanelOptionsModel | undefined;
-  key = 'PanelWidget';
+  //key = 'PanelWidget';
 
   //readonly widgetDirection = WidgetDirection;
   readonly panelPlacement = PanelPlacement;
@@ -23,7 +23,7 @@ export class WindowPanelComponent extends WidgetBase {
   }
 
   protected override onInit(): void {
-    this.options = new PanelOptionsModel(this.key, PanelPlacement.Window);
+    this.options = new PanelOptionsModel(CommunicationChannel.WindowPanel, PanelPlacement.Window);
     this.panelManagerService.register(this.options);
     this.panelManagerService.setOptions(this.options);
     this.broadcastChannel?.postMessage(new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.GetDetails));

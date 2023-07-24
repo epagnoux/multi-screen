@@ -19,7 +19,7 @@ export enum PanelPlacement {
 export class PanelBaseComponent extends BaseComponent {
   @Input() title?: string;
   @Input() options: PanelOptionsModel | undefined;
-  @Input() placement = PanelPlacement.Embeded;
+  //@Input() originalPlacement = PanelPlacement.Embeded;
 
   broadcastChannel: BroadcastChannel | undefined;
 
@@ -27,7 +27,7 @@ export class PanelBaseComponent extends BaseComponent {
 
   readonly panelPlacement = PanelPlacement;
   currentWindow: any;
-  item: any;
+  item: PanelOptionsModel | undefined;
 
   constructor(private panelManagerService: PanelManagerService, injector: Injector) {
     super(injector);
@@ -37,15 +37,12 @@ export class PanelBaseComponent extends BaseComponent {
     this.broadcastChannel = new BroadcastChannel(CommunicationChannel.Widget);
 
     this.broadcastChannel.onmessage = (message) => {
-      console.log(message);
       this.receiveMessage(message.data as any);
       BaseComponent.changeDetectorRef?.detectChanges();
     };
 
     this.subscribe(
-      this.panelManagerService.optionsUpdated$.subscribe((item) => {
-        console.log(this.placement);
-
+      this.panelManagerService.optionsUpdated$.subscribe((item: PanelOptionsModel | undefined) => {
         this.item = item;
         if (this.item) {
           this.updateVisibility(this.item);
@@ -53,32 +50,30 @@ export class PanelBaseComponent extends BaseComponent {
       })
     );
 
-    if (!this.options) {
-      this.options = new PanelOptionsModel(CommunicationChannel.PanelManager, this.placement);
-    }
+    // if (!this.options) {
+    //   this.options = new PanelOptionsModel(CommunicationChannel.PanelManager, this.options?.currentPlacement);
+    // }
 
     this.panelManagerService.register(this.options);
     this.updateVisibility(this.panelManagerService.getOptions(this.options));
   }
 
-  updateVisibility(item: PanelOptionsModel) {
-    if (this.placement === PanelPlacement.Window) {
+  updateVisibility(item: PanelOptionsModel | undefined) {
+    if (this.options?.originalPlacement === PanelPlacement.Window) {
       console.log('window');
     }
 
-    if (item.placement === PanelPlacement.Window && item.placement === this.placement) {
+    if (item?.currentPlacement === PanelPlacement.Window && item.currentPlacement === this.options?.originalPlacement) {
       this.isVisible = true;
       return;
     }
 
-    this.isVisible = item.placement === this.placement;
+    this.isVisible = item?.currentPlacement === this.options?.originalPlacement;
     BaseComponent.changeDetectorRef?.detectChanges();
-    console.log(this.placement + ' / ' + this.isVisible);
-    console.log('aaa');
   }
 
   onUpdatePlacement(placement: PanelPlacement) {
-    if (this.options?.placement === PanelPlacement.Window && placement !== PanelPlacement.Window) {
+    if (this.options?.currentPlacement === PanelPlacement.Window && placement !== PanelPlacement.Window) {
       // Closing Panel window
       this.broadcastChannel?.postMessage(
         new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClosing, placement)
@@ -86,7 +81,7 @@ export class PanelBaseComponent extends BaseComponent {
     }
 
     if (this.options) {
-      this.options.placement = placement;
+      this.options.currentPlacement = placement;
       this.panelManagerService.setOptions(this.options);
     }
   }
@@ -96,7 +91,9 @@ export class PanelBaseComponent extends BaseComponent {
       case CommunicationChannel.Widget:
         switch (message.command as WidgetCommand) {
           case WidgetCommand.PanelWindowClosing:
-            this.item.placement = message.param;
+            if (message.param && this.item) {
+              this.item.currentPlacement = message.param;
+            }
             this.updateVisibility(this.item);
 
             this.broadcastChannel?.postMessage(
@@ -105,7 +102,7 @@ export class PanelBaseComponent extends BaseComponent {
             break;
 
           case WidgetCommand.PanelWindowClose:
-            if (this.placement === PanelPlacement.Window) {
+            if (this.options?.originalPlacement === PanelPlacement.Window) {
               window.close();
             }
             break;
