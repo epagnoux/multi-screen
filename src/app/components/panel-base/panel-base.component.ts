@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Injector, Input } from '@angular/core';
+import { Component, Injector, Input } from '@angular/core';
 
 import { CommunicationChannel, WidgetCommand } from 'src/app/core/UiEnumerations';
 import { CommunicationMessage } from 'src/app/models/communication-message.model';
@@ -9,7 +9,7 @@ import { BaseComponent } from '../base/base.component';
 
 export enum PanelPlacement {
   Popup = 'popup',
-  Embeded = 'embeded',
+  Embedded = 'embedded',
   Window = 'window'
 }
 @Component({
@@ -17,7 +17,7 @@ export enum PanelPlacement {
   templateUrl: './panel-base.component.html',
   styleUrls: ['./panel-base.component.less']
 })
-export class PanelBaseComponent extends BaseComponent implements AfterViewInit {
+export class PanelBaseComponent extends BaseComponent {
   @Input() title?: string;
   @Input() options: PanelOptionsModel | undefined;
 
@@ -52,20 +52,6 @@ export class PanelBaseComponent extends BaseComponent implements AfterViewInit {
       })
     );
 
-    window.addEventListener('unload', (event: Event) => {
-      const url = new URL(window.location.href);
-      if (url.pathname !== `/${CommunicationChannel.WindowPanel}`) {
-        this.broadcastChannel?.postMessage(
-          new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClosing, this.options?.currentPlacement)
-        );
-      }
-    });
-
-    this.panelManagerService.register(this.options);
-    this.updateVisibility(this.panelManagerService.getOptions(this.options));
-  }
-
-  ngAfterViewInit(): void {
     this.screenService.isMutiScreen$.subscribe((isMultiScreen: boolean | undefined) => {
       this.isMultiScreen = isMultiScreen;
 
@@ -77,6 +63,18 @@ export class PanelBaseComponent extends BaseComponent implements AfterViewInit {
         this.updateVisibility(this.options);
       }
     });
+
+    window.addEventListener('unload', (event: Event) => {
+      const url = new URL(window.location.href);
+      if (url.pathname !== `/${CommunicationChannel.WindowPanel}`) {
+        this.broadcastChannel?.postMessage(
+          new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClosing, this.options?.currentPlacement)
+        );
+      }
+    });
+
+    this.panelManagerService.register(this.options);
+    this.updateVisibility(this.panelManagerService.getOptions(this.options));
   }
 
   updateVisibility(item: PanelOptionsModel | undefined) {

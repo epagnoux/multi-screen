@@ -1,4 +1,10 @@
-<div class="wrapper">
+<div
+  class="wrapper"
+  [ngClass]="{
+    embedded: this.options?.originalPlacement === panelPlacement.Embedded,
+    window: this.options?.originalPlacement === panelPlacement.Window
+  }"
+>
   <ng-container *ngIf="isVisible">
     <!-- <ng-container> -->
     <div class="header">
@@ -13,8 +19,8 @@
           <div class="action" *ngIf="options?.originalPlacement !== panelPlacement.Popup">
             <button (click)="onUpdatePlacement(panelPlacement.Popup)">Popup</button>
           </div>
-          <div class="action" *ngIf="options?.originalPlacement !== panelPlacement.Embeded">
-            <button (click)="onUpdatePlacement(panelPlacement.Embeded)">Embeded</button>
+          <div class="action" *ngIf="options?.originalPlacement !== panelPlacement.Embedded">
+            <button (click)="onUpdatePlacement(panelPlacement.Embedded)">embedded</button>
           </div>
         </div>
       </div>
