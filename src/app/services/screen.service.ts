@@ -16,7 +16,9 @@ export class ScreenService {
     });
   }
   private updateIsMultiscreen() {
-    this.isMutiScreen = (window.screen as any).isExtended;
+    // TODO: change by Device ex: iPad no multiple
+    //this.isMutiScreen = (window.screen as any).isExtended;
+    this.isMutiScreen = true;
     this.isMutiScreen$.next(this.isMutiScreen);
   }
 }

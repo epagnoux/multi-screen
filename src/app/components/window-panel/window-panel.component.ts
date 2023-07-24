@@ -27,6 +27,13 @@ export class WindowPanelComponent extends WidgetBase {
     this.panelManagerService.register(this.options);
     this.panelManagerService.setOptions(this.options);
     this.broadcastChannel?.postMessage(new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.GetDetails));
+
+    window.addEventListener('unload', (event) => {
+      console.log('unload');
+      this.broadcastChannel?.postMessage(
+        new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClosing, PanelPlacement.Popup)
+      );
+    });
   }
   protected override receiveMessage(message: CommunicationMessage | undefined): void {}
 }

@@ -26,7 +26,6 @@ export class WidgetSocialMediaComponent extends WidgetBase {
         switch (message.command as WidgetCommand) {
           case WidgetCommand.UpdateDetails:
             this.item = message.param;
-            this.cdRef.detectChanges();
             break;
         }
         break;

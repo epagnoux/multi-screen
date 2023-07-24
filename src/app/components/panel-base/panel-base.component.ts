@@ -27,7 +27,7 @@ export class PanelBaseComponent extends BaseComponent implements AfterViewInit {
 
   currentWindow: any;
   item: PanelOptionsModel | undefined;
-  isMultiScreen: boolean | undefined;
+  isMultiScreen: boolean | undefined = false;
 
   readonly panelPlacement = PanelPlacement;
 
@@ -52,9 +52,12 @@ export class PanelBaseComponent extends BaseComponent implements AfterViewInit {
       })
     );
 
-    // if (!this.options) {
-    //   this.options = new PanelOptionsModel(CommunicationChannel.PanelManager, this.options?.currentPlacement);
-    // }
+    window.addEventListener('unload', (event) => {
+      console.log('unload');
+      this.broadcastChannel?.postMessage(
+        new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClosing, PanelPlacement.Popup)
+      );
+    });
 
     this.panelManagerService.register(this.options);
     this.updateVisibility(this.panelManagerService.getOptions(this.options));

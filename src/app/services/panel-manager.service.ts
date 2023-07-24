@@ -22,20 +22,19 @@ export class PanelManagerService {
     }
     // Clone options
     this.items.push({ ...options });
-    //console.log('PanelManager Items Length: ', this.items.length);
   }
   unregister(options: PanelOptionsModel) {
     this.items = this.items.filter((p) => p.key !== options.key);
     console.log('PanelManager Items Length: ', this.items.length);
   }
 
-  setOptions(windoOptions: PanelOptionsModel) {
-    const item = this.items.find((p) => p.key === windoOptions.key);
+  setOptions(windowOptions: PanelOptionsModel) {
+    const item = this.items.find((p) => p.key === windowOptions.key);
     if (item) {
       const isFirstOpeneingWindow =
-        windoOptions.currentPlacement === PanelPlacement.Window && item.currentPlacement !== windoOptions.currentPlacement;
+        windowOptions.currentPlacement === PanelPlacement.Window && item.currentPlacement !== windowOptions.currentPlacement;
 
-      item.currentPlacement = windoOptions.currentPlacement;
+      item.currentPlacement = windowOptions.currentPlacement;
       this.optionsUpdated = item;
       this.optionsUpdated$.next(this.optionsUpdated);
 

@@ -1,8 +1,8 @@
 import { Injectable, Injector, Input } from '@angular/core';
 
-import { BaseComponent } from '../../base/base.component';
 import { CommunicationChannel } from 'src/app/core/UiEnumerations';
 import { CommunicationMessage } from 'src/app/models/communication-message.model';
+import { BaseComponent } from '../../base/base.component';
 
 export enum WidgetDirection {
   Horizontal = 'horizontal',
@@ -23,7 +23,6 @@ export abstract class WidgetBase extends BaseComponent {
     this.broadcastChannel = new BroadcastChannel(CommunicationChannel.Widget);
 
     this.broadcastChannel.onmessage = (message) => {
-      console.log(message);
       this.receiveMessage(message.data as any);
       BaseComponent.changeDetectorRef?.detectChanges();
     };
