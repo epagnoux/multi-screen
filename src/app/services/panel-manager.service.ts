@@ -1,36 +1,20 @@
-import { BehaviorSubject } from 'rxjs';
-
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import { PanelPlacement } from '../components/panel-base/panel-base.component';
 import { RoutingPaths } from '../core/UiEnumerations';
 import { PanelOptionsModel } from '../models/panel-options.model';
-import { ScreenService } from './screen.service';
-
-export enum PanelManagerDisplayMode {
-  Popup,
-  Embeded,
-  Window
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class PanelManagerService {
   items: PanelOptionsModel[] = [];
-  private isMultiScreen: boolean | undefined;
 
   public optionsUpdated: PanelOptionsModel | undefined;
   public optionsUpdated$ = new BehaviorSubject<PanelOptionsModel | undefined>(undefined);
 
-  constructor(private screenService: ScreenService, private router: Router) {
-    this.screenService.isMutiScreen$.subscribe((isMultiScreen: boolean | undefined) => {
-      this.isMultiScreen = isMultiScreen;
-      if (this.isMultiScreen) {
-        this.setOptions;
-      }
-    });
-  }
+  constructor(private router: Router) {}
 
   register(options: PanelOptionsModel | undefined) {
     if (!options) {

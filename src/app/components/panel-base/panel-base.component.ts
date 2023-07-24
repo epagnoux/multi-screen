@@ -1,9 +1,10 @@
-import { Component, Injector, Input } from '@angular/core';
+import { AfterViewInit, Component, Injector, Input } from '@angular/core';
 
 import { CommunicationChannel, WidgetCommand } from 'src/app/core/UiEnumerations';
 import { CommunicationMessage } from 'src/app/models/communication-message.model';
 import { PanelOptionsModel } from 'src/app/models/panel-options.model';
 import { PanelManagerService } from 'src/app/services/panel-manager.service';
+import { ScreenService } from 'src/app/services/screen.service';
 import { BaseComponent } from '../base/base.component';
 
 export enum PanelPlacement {
@@ -16,20 +17,21 @@ export enum PanelPlacement {
   templateUrl: './panel-base.component.html',
   styleUrls: ['./panel-base.component.less']
 })
-export class PanelBaseComponent extends BaseComponent {
+export class PanelBaseComponent extends BaseComponent implements AfterViewInit {
   @Input() title?: string;
   @Input() options: PanelOptionsModel | undefined;
-  //@Input() originalPlacement = PanelPlacement.Embeded;
 
   broadcastChannel: BroadcastChannel | undefined;
 
   isVisible = false;
 
-  readonly panelPlacement = PanelPlacement;
   currentWindow: any;
   item: PanelOptionsModel | undefined;
+  isMultiScreen: boolean | undefined;
 
-  constructor(private panelManagerService: PanelManagerService, injector: Injector) {
+  readonly panelPlacement = PanelPlacement;
+
+  constructor(private panelManagerService: PanelManagerService, private screenService: ScreenService, injector: Injector) {
     super(injector);
   }
 
@@ -58,10 +60,25 @@ export class PanelBaseComponent extends BaseComponent {
     this.updateVisibility(this.panelManagerService.getOptions(this.options));
   }
 
+  ngAfterViewInit(): void {
+    this.screenService.isMutiScreen$.subscribe((isMultiScreen: boolean | undefined) => {
+      this.isMultiScreen = isMultiScreen;
+
+      if (this.options && !this.isMultiScreen) {
+        // Restore popup if not multiscreen
+
+        this.broadcastChannel?.postMessage(new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClose));
+        this.options.currentPlacement = PanelPlacement.Popup;
+        this.panelManagerService.setOptions(this.options);
+        //this.updateVisibility(this.options);
+      }
+    });
+  }
+
   updateVisibility(item: PanelOptionsModel | undefined) {
-    if (this.options?.originalPlacement === PanelPlacement.Window) {
-      console.log('window');
-    }
+    // if (!this.item) {
+    //   return;
+    // }
 
     if (item?.currentPlacement === PanelPlacement.Window && item.currentPlacement === this.options?.originalPlacement) {
       this.isVisible = true;
