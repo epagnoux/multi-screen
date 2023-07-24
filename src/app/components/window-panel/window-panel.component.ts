@@ -30,9 +30,11 @@ export class WindowPanelComponent extends WidgetBase {
 
     window.addEventListener('unload', (event) => {
       console.log('unload');
-      this.broadcastChannel?.postMessage(
-        new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClosing, PanelPlacement.Popup)
-      );
+      if (this.options?.currentPlacement === PanelPlacement.Window) {
+        this.broadcastChannel?.postMessage(
+          new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClosing, PanelPlacement.Popup)
+        );
+      }
     });
   }
   protected override receiveMessage(message: CommunicationMessage | undefined): void {}

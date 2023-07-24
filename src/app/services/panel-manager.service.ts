@@ -28,13 +28,13 @@ export class PanelManagerService {
     console.log('PanelManager Items Length: ', this.items.length);
   }
 
-  setOptions(windowOptions: PanelOptionsModel) {
-    const item = this.items.find((p) => p.key === windowOptions.key);
+  setOptions(options: PanelOptionsModel) {
+    const item = this.items.find((p) => p.key === options.key);
     if (item) {
       const isFirstOpeneingWindow =
-        windowOptions.currentPlacement === PanelPlacement.Window && item.currentPlacement !== windowOptions.currentPlacement;
+        options.currentPlacement === PanelPlacement.Window && item.currentPlacement !== options.currentPlacement;
 
-      item.currentPlacement = windowOptions.currentPlacement;
+      item.currentPlacement = options.currentPlacement;
       this.optionsUpdated = item;
       this.optionsUpdated$.next(this.optionsUpdated);
 

@@ -52,11 +52,13 @@ export class PanelBaseComponent extends BaseComponent implements AfterViewInit {
       })
     );
 
-    window.addEventListener('unload', (event) => {
-      console.log('unload');
-      this.broadcastChannel?.postMessage(
-        new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClosing, PanelPlacement.Popup)
-      );
+    window.addEventListener('unload', (event: Event) => {
+      const url = new URL(window.location.href);
+      if (url.pathname !== `/${CommunicationChannel.WindowPanel}`) {
+        this.broadcastChannel?.postMessage(
+          new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClosing, this.options?.currentPlacement)
+        );
+      }
     });
 
     this.panelManagerService.register(this.options);
@@ -69,11 +71,10 @@ export class PanelBaseComponent extends BaseComponent implements AfterViewInit {
 
       if (this.options && !this.isMultiScreen) {
         // Restore popup if not multiscreen
-
         this.broadcastChannel?.postMessage(new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClose));
         this.options.currentPlacement = PanelPlacement.Popup;
         this.panelManagerService.setOptions(this.options);
-        //this.updateVisibility(this.options);
+        this.updateVisibility(this.options);
       }
     });
   }
@@ -106,19 +107,21 @@ export class PanelBaseComponent extends BaseComponent implements AfterViewInit {
     }
   }
 
-  protected receiveMessage(message: CommunicationMessage | undefined): void {
+  protected receiveMessage(message: CommunicationMessage | undefined) {
     switch (message?.channel) {
       case CommunicationChannel.Widget:
         switch (message.command as WidgetCommand) {
           case WidgetCommand.PanelWindowClosing:
-            if (message.param && this.item) {
-              this.item.currentPlacement = message.param;
-            }
-            this.updateVisibility(this.item);
-
             this.broadcastChannel?.postMessage(
               new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClose)
             );
+
+            if (message.param && this.item) {
+              this.item.currentPlacement = message.param;
+              this.panelManagerService.setOptions(this.item);
+            }
+            this.updateVisibility(this.item);
+
             break;
 
           case WidgetCommand.PanelWindowClose:
