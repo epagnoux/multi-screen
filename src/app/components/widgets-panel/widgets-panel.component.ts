@@ -29,7 +29,6 @@ export class WidgetsPanelComponent extends WidgetBase {
     this.broadcastChannel?.postMessage(new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.GetDetails));
 
     window.addEventListener('unload', (event) => {
-      console.log('unload');
       if (this.options?.currentPlacement === PanelPlacement.Window) {
         this.broadcastChannel?.postMessage(
           new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClosing, PanelPlacement.Popup)

@@ -21,7 +21,7 @@ export class LayersComponent extends BaseComponent {
     this.broadcastChannel = new BroadcastChannel(CommunicationChannel.Widget);
 
     this.broadcastChannel.onmessage = (message) => {
-      console.log(message);
+      //      console.log(message);
     };
   }
 

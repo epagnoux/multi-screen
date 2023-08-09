@@ -1,6 +1,6 @@
 import { Component, Injector, Input } from '@angular/core';
 
-import { CommunicationChannel, WidgetCommand } from 'src/app/core/UiEnumerations';
+import { CommunicationChannel, RoutingPaths, WidgetCommand } from 'src/app/core/UiEnumerations';
 import { CommunicationMessage } from 'src/app/models/communication-message.model';
 import { PanelOptionsModel } from 'src/app/models/panel-options.model';
 import { PanelManagerService } from 'src/app/services/panel-manager.service';
@@ -66,7 +66,7 @@ export class PanelBaseComponent extends BaseComponent {
 
     window.addEventListener('unload', (event: Event) => {
       const url = new URL(window.location.href);
-      if (url.pathname !== `/${CommunicationChannel.WindowPanel}`) {
+      if (url.pathname !== `/${RoutingPaths.WidgetsPanel}`) {
         this.broadcastChannel?.postMessage(
           new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClosing, this.options?.currentPlacement)
         );
@@ -78,10 +78,6 @@ export class PanelBaseComponent extends BaseComponent {
   }
 
   updateVisibility(item: PanelOptionsModel | undefined) {
-    // if (!this.item) {
-    //   return;
-    // }
-
     if (item?.currentPlacement === PanelPlacement.Window && item.currentPlacement === this.options?.originalPlacement) {
       this.isVisible = true;
       return;
