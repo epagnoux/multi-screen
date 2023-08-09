@@ -7,15 +7,13 @@ import { PanelPlacement } from '../panel-base/panel-base.component';
 import { WidgetBase } from '../widget/base/widget-base.component';
 
 @Component({
-  selector: 'app-widgets-panel',
-  templateUrl: './widgets-panel.component.html',
-  styleUrls: ['./widgets-panel.component.less']
+  selector: 'app-widget-panel',
+  templateUrl: './widget-panel.component.html',
+  styleUrls: ['./widget-panel.component.less']
 })
-export class WidgetsPanelComponent extends WidgetBase {
+export class WidgetPanelComponent extends WidgetBase {
   options: PanelOptionsModel | undefined;
-  //key = 'PanelWidget';
 
-  //readonly widgetDirection = WidgetDirection;
   readonly panelPlacement = PanelPlacement;
 
   constructor(private panelManagerService: PanelManagerService, injector: Injector) {

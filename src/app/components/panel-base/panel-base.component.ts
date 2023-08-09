@@ -66,7 +66,7 @@ export class PanelBaseComponent extends BaseComponent {
 
     window.addEventListener('unload', (event: Event) => {
       const url = new URL(window.location.href);
-      if (url.pathname !== `/${RoutingPaths.WidgetsPanel}`) {
+      if (url.pathname !== `/${RoutingPaths.WidgetPanel}`) {
         this.broadcastChannel?.postMessage(
           new CommunicationMessage(CommunicationChannel.Widget, WidgetCommand.PanelWindowClosing, this.options?.currentPlacement)
         );

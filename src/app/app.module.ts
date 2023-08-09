@@ -7,11 +7,11 @@ import { HomeComponent } from './components/home/home.component';
 import { LayersComponent } from './components/layers/layers.component';
 import { PanelBaseComponent } from './components/panel-base/panel-base.component';
 import { ScreenContentComponent } from './components/screen-content/screen-content.component';
+import { WidgetPanelComponent } from './components/widget-panel/widget-panel.component';
 import { WidgetCiviliansComponent } from './components/widget/widget-civilians/widget-civilians.component';
 import { WidgetItemComponent } from './components/widget/widget-item/widget-item.component';
 import { WidgetManagerComponent } from './components/widget/widget-manager/widget-manager.component';
 import { WidgetSocialMediaComponent } from './components/widget/widget-social-media/widget-social-media.component';
-import { WidgetsPanelComponent } from './components/widgets-panel/widgets-panel.component';
 
 @NgModule({
   declarations: [
@@ -24,13 +24,13 @@ import { WidgetsPanelComponent } from './components/widgets-panel/widgets-panel.
     WidgetSocialMediaComponent,
     WidgetCiviliansComponent,
     LayersComponent,
-    WidgetsPanelComponent,
+    WidgetPanelComponent,
     HomeComponent
   ],
   imports: [BrowserModule, AppRoutingModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [],
   bootstrap: [AppComponent],
-  exports: [WidgetsPanelComponent]
+  exports: [WidgetPanelComponent]
 })
 export class AppModule {}

@@ -15,7 +15,7 @@ export enum WidgetCommand {
 }
 
 export enum RoutingPaths {
-  WidgetsPanel = 'widgetsPanel'
+  WidgetPanel = 'widgetPanel'
 }
 
 export class UiEnumerations {
