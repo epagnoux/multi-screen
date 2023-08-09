@@ -1,10 +1,8 @@
 import { Injector } from '@angular/core';
 
 export enum CommunicationChannel {
-  Application = 'application',
   SocialMedia = 'socialMedia',
   Civilians = 'civilians',
-  PanelManager = 'panelManager',
   WindowPanel = 'windowPanel',
   Widget = 'Widget'
 }
@@ -17,7 +15,7 @@ export enum WidgetCommand {
 }
 
 export enum RoutingPaths {
-  WindowPanel = 'windowPanel'
+  WidgetsPanel = 'widgetsPanel'
 }
 
 export class UiEnumerations {

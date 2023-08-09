@@ -39,7 +39,7 @@ export class PanelManagerService {
       this.optionsUpdated$.next(this.optionsUpdated);
 
       if (isFirstOpeneingWindow) {
-        const routePath = this.router.createUrlTree([`${RoutingPaths.WindowPanel}`]).toString();
+        const routePath = this.router.createUrlTree([`${RoutingPaths.WidgetsPanel}`]).toString();
         const windowOptions =
           'toolbar=0,scrollbars=0,resizable=0,menubar=0,status=0,titlebar=0,left=100,top=100,width=400,height=700';
         window.open(routePath, '_blank', windowOptions);

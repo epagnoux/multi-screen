@@ -1,9 +1,9 @@
 import { RouterModule, Routes } from '@angular/router';
 
-import { HomeComponent } from './components/home/home.component';
 import { NgModule } from '@angular/core';
+import { HomeComponent } from './components/home/home.component';
+import { WidgetsPanelComponent } from './components/widgets-panel/widgets-panel.component';
 import { RoutingPaths } from './core/UiEnumerations';
-import { WindowPanelComponent } from './components/window-panel/window-panel.component';
 
 const routes: Routes = [
   {
@@ -12,8 +12,8 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
-    path: RoutingPaths.WindowPanel,
-    component: WindowPanelComponent
+    path: RoutingPaths.WidgetsPanel,
+    component: WidgetsPanelComponent
   },
   {
     path: '**',

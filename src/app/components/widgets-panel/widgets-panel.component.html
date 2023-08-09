@@ -1,0 +1,12 @@
+<div class="wrapper">
+  <app-panel-base [title]="'Panel Widgets'" *ngIf="options" [options]="options" [placement]="panelPlacement.Window">
+    <app-widget-manager>
+      <app-widget-item [title]="'Social Media'">
+        <app-widget-social-media></app-widget-social-media>
+      </app-widget-item>
+      <app-widget-item [title]="'Civilians'">
+        <app-widget-civilians></app-widget-civilians>
+      </app-widget-item>
+    </app-widget-manager>
+  </app-panel-base>
+</div>
