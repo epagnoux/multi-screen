@@ -9,6 +9,8 @@ import { WidgetBase } from '../base/widget-base.component';
   styleUrls: ['./widget-manager.component.less']
 })
 export class WidgetManagerComponent extends WidgetBase {
+  override widgetChannel: string | undefined;
+
   constructor(injector: Injector) {
     super(injector);
   }
@@ -16,4 +18,6 @@ export class WidgetManagerComponent extends WidgetBase {
   protected override onInit(): void {}
 
   protected override receiveMessage(message: CommunicationMessage | undefined): void {}
+  protected override receiveData(data: any): void {}
+  protected override getData() {}
 }

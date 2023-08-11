@@ -12,6 +12,7 @@ import { WidgetBase } from '../widget/base/widget-base.component';
   styleUrls: ['./widget-panel.component.less']
 })
 export class WidgetPanelComponent extends WidgetBase {
+  override widgetChannel: string | undefined;
   options: PanelOptionsModel | undefined;
 
   readonly panelPlacement = PanelPlacement;
@@ -35,4 +36,6 @@ export class WidgetPanelComponent extends WidgetBase {
     });
   }
   protected override receiveMessage(message: CommunicationMessage | undefined): void {}
+  protected override receiveData(data: any): void {}
+  protected override getData() {}
 }
